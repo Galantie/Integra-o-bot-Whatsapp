@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -27,16 +26,22 @@ msg = str(mensagem)
 
 user = driver.find_element_by_xpath('//span[@title = "{}"]'.format(name))
 user.click()
+iniciar = input('depois de clicar no contato prosseguir?')
 
 msg_box = driver.find_element_by_class_name('_2S1VP')
 msg_box.send_keys(msg)
-WebDriverWait(driver, 10)
+iniciar = input('Enviar?')
+#WebDriverWait(driver, 30)
 button = driver.find_element_by_class_name('_35EW6')
 button.click()
-driver.find_element_by_class_name('_1aTxu').click()
 
+iniciar = input('seguir para a espera pela mensagem?')
+#driver.find_element_by_class_name('_1aTxu').click()
+
+x=1
 while (True):
-
+    wait = WebDriverWait(driver, 40)
+    element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'OUeyt')))
     contador = int(driver.find_element_by_class_name('OUeyt').text)
     if ( contador> 0):
         # user = driver.find_element_by_xpath('//span[@title = "{}"]'.format(name))
@@ -47,5 +52,22 @@ while (True):
         caixa_de_texto = driverbot.find_element_by_id('-chatPanel__submitInput')
         caixa_de_texto.send_keys(str(msgm_do_whats_conv))
         caixa_de_texto.send_keys(Keys.ENTER)
+        #adicionado para teste
+        #posicao_chat = '-chatPanel_exchange{}_part0'.format(x)
+
+        #novoelement = wait.until(EC.presence_of_element_located((By.ID, '-chatPanel_exchange{}_part0'.format(x))))
+        input('Foi gerada a mensagem?')
+        msg_whats = driverbot.find_element_by_id('-chatPanel_exchange{}_part0'.format(x))
+        x=x+1
+        mensagem = msg_whats.text
+        msg = str(mensagem)
+        msg_box = driver.find_element_by_class_name('_2S1VP')
+        msg_box.send_keys(msg)
+        iniciar = input('Enviar?')
+        # WebDriverWait(driver, 30)
+        button = driver.find_element_by_class_name('_35EW6')
+        button.click()
+
+
     else:
         print('Ninguem escreveu nada')
